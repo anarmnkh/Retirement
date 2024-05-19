@@ -211,7 +211,7 @@ const SalaryInfo = () => {
         </div>
 
         <button
-          className=" mt-2 w-full py-3 px-4 border-2 text-sm font-medium rounded-full text-black bg-white hover:bg-gray-300  hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 border-red-300"
+          className=" mt-2 w-full py-3 px-4 border-2 text-sm font-medium rounded-full"
           onClick={handleCalculate}
         >
           Тооцоолох

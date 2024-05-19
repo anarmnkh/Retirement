@@ -24,7 +24,7 @@ const InfoPage = () => {
         <p>Өндөр насны тэтгэвэр нь тэтгэврийн даатгалд даатгуулсан тэтгэвэр тогтоох насны болон шимтгэл төлөх хугацааны болзол хангасан иргэнд хөдөлмөрийн хөлсний орлогоос нь тодорхой хувь хэмжээгээр тооцож, тэтгэврийн даатгалын сангаас насан туршид нь амьжиргааны эх үүсвэр болгон сар бүр олгогдоно.</p>
         <p>Тэтгэвэр нь дараах онцлогтой. Үүнд:</p>
         <ul class="list-disc pl-5">
-          <li>Амьжиргааны үндсэн эх үүсвэр;р</li>
+          <li>Амьжиргааны үндсэн эх үүсвэр;</li>
           <li>Насан туршид нь олгогддог.</li>
         </ul>
         <h1>Өндөр насны тэтгэвэр авах эрх:</h1>
@@ -33,11 +33,8 @@ const InfoPage = () => {
         <p> Хэрэв даатгуулагч тэтгэврийн даатгалын шимтгэл төлсөн байвал зохих дээрх болзлыг хангаагүй тохиолдолд өндөр насны тэтгэврийг хувь тэнцүүлэн тогтоолгоно:</p>
         <p> -Шимтгэл төлсөн байвал зохих хугацаа:<b>10-19 жил</b></p>
         <p> Нас:<b> Төрсөн ондоо харгалзах насанд хүрсэн байна. </b></p>
-     
-     
-        `,
+      `,
     },
-
     {
       title: "Өндөр насны тэтгэвэр бодох арга:",
       content: `
@@ -51,24 +48,21 @@ const InfoPage = () => {
         <p><b>Өндөр насны тэтгэвэр бодох хувь хэмжээ:</b></p>
         <p>Өндөр насны тэтгэврийг даатгуулагчийн тэтгэврийн даатгалын шимтгэл төлсөн сүүлийн 20 жилийн доторх дараалсан 5 жилийн буюу 60 сарын цалин хөлс, түүнтэй адилтгах орлогын дунджаас 45 хувиар тогтооно. Тэтгэврийн даатгалын шимтгэлийг 20 жилээс илүү төлсөн жил тутамд дундаж цалингийн 1.5 хувиар, сар тутамд 0.125 хувиар, 2029 оны 01 дүгээр сарын 01-ний өдрөөс эхлэн шимтгэл төлсөн сар тутамд 0.167 хувиар тооцон тэтгэврийн хэмжээг нэмэгдүүлнэ.</p>
         <p>Тэтгэвэр тогтоолгосон боловч 12 сараас доошгүй хугацаанд ажил, хөдөлмөр эрхэлж, нийгмийн даатгалын шимтгэл төлсөн даатгуулагчийн авч байгаа тэтгэврийн хэмжээг анхны тэтгэвэр тогтоолгосон дундаж цалингаас 12 сар тутамд 1.5 хувиар бодож нэмэгдүүлэн тогтооно.</p>
-
-
-
-        `,
+      `,
     },
   ];
 
   return (
-    <div className="flex flex-row h-screen p-10">
-      <div className="w-1/4 bg-white p-4 mt-20">
-        <div className="border-2 border-black rounded-lg">
-          <h2 className="text-xl font-bold mb-4">Info Titles</h2>
-          <ul>
+    <div className="flex flex-col lg:flex-row h-screen p-10 bg-gray-300">
+      <div className="lg:w-1/4 bg-gray-100 p-6 mt-20 shadow-xl rounded-lg ">
+        <div className="border-2 border-gray-600 rounded-lg p-4">
+          <h2 className="text-2xl font-bold mb-4 text-center text-red-500">ТЭТГЭВЭР</h2>
+          <ul className="space-y-2">
             {infoList.map((info, index) => (
               <li
                 key={index}
-                className={`cursor-pointer hover:text-blue-500 ${
-                  selectedInfo === info ? "bg-blue-200" : ""
+                className={`cursor-pointer hover:bg-gray-400 p-2 rounded transition duration-300 ease-in-out transform ${
+                  selectedInfo === info ? "bg-gray-700 text-red-500" : "text-gray-800"
                 }`}
                 onClick={() => setSelectedInfo(info)}
               >
@@ -79,18 +73,17 @@ const InfoPage = () => {
         </div>
       </div>
 
-      <div className="w-3/4 bg-white p-4 mt-20">
-        <div className="text-xl font-bold mb-4"></div>
+      <div className="lg:w-3/4 bg-gray-100 p-6  mt-20 shadow-xl rounded-lg overflow-y-auto ml-2">
         {selectedInfo ? (
           <div>
-            <h3 className="text-lg font-bold mb-2">{selectedInfo.title}</h3>
+            <h3 className="text-xl font-bold mb-2 text-red-500">{selectedInfo.title}</h3>
             <div
-              className="text-gray-800"
+              className="text-gray-800 leading-relaxed"
               dangerouslySetInnerHTML={{ __html: selectedInfo.content }}
             />
           </div>
         ) : (
-          <p>Please select an info title</p>
+          <p className="text-center text-gray-500"></p>
         )}
       </div>
     </div>

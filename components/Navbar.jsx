@@ -6,11 +6,12 @@ import Signin from "./Signin";
 import Signup from "./Signup";
 import { signOut, useSession } from "next-auth/react";
 
-import { FaUser } from "react-icons/fa6";
+import { FaUser, FaChevronDown, FaChevronUp } from "react-icons/fa";
 
 const Navbar = () => {
   const { data: session } = useSession();
   const [nav, setNav] = useState(false);
+  const [profileMenuOpen, setProfileMenuOpen] = useState(false);
   const handleClick = () => setNav(!nav);
   const handleClose = () => setNav(false);
 
@@ -28,12 +29,18 @@ const Navbar = () => {
   };
 
   const wrapperRef = useRef(null);
+  const handleClickOutside = (event) => {
+    if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+      setProfileMenuOpen(false);
+    }
+  };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
         setShowLoginForm(false);
         setShowRegisterForm(false);
+        setProfileMenuOpen(false);
       }
     };
 
@@ -50,7 +57,7 @@ const Navbar = () => {
         <div className="flex items-center ml-8">
           <h1 className="text-3xl font-bold mr-6 sm:text-4xl">RETIREMENT.</h1>
 
-          <ul className="hidden md:flex  text-lg">
+          <ul className="hidden md:flex text-lg">
             <li>
               <Link href="/" onClick={handleClose}>
                 Нүүр
@@ -73,11 +80,11 @@ const Navbar = () => {
             </li>
           </ul>
         </div>
-        {!session ? (
-          <>
-            <div className="hidden md:flex space-x-4 mr-8 ">
+        <div className="flex items-center space-x-4 mr-8">
+          {!session ? (
+            <>
               <button
-                className="border-none bg-transparent text-black  text-lg"
+                className="border-none bg-transparent text-black text-lg"
                 onClick={toggleLoginForm}
               >
                 Нэвтрэх
@@ -88,30 +95,49 @@ const Navbar = () => {
               >
                 Бүртгүүлэх
               </button>
-            </div>
-
-            <div className="md:hidden mr-4" onClick={handleClick}>
-              {!nav ? <MenuIcon className="w-5" /> : <XIcon className="w-5" />}
-            </div>
-          </>
-        ) : (
-          <>
-            <div className="flex items-center space-x-4 mr-10">
-              <div className="w-10 h-10 rounded-full relative">
-                <FaUser size={40}/>
-              </div>
-              {session?.user?.email && <span>{session.user.email}</span>}
-              <button
-                onClick={() => {
-                  signOut();
-                }}
-                className="btn btn-primary"
+            </>
+          ) : (
+            <div ref={wrapperRef} className="relative">
+              <div
+                className="flex items-center cursor-pointer p-6 pb-3 pt-3 hover:bg-gray-100 rounded transition-colors shadow-md"
+                onClick={() => setProfileMenuOpen(!profileMenuOpen)}
               >
-                Гарах
-              </button>
+                <div className="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center">
+                  <FaUser size={32} className="text-gray-600" />
+                </div>
+                <span className="ml-4 text-gray-800 font-semibold text-lg">
+                  {session?.user?.name || "Username"}
+                </span>
+                {profileMenuOpen ? (
+                  <FaChevronUp className="ml-2 text-gray-700" />
+                ) : (
+                  <FaChevronDown className="ml-2 text-gray-700" />
+                )}
+              </div>
+              {profileMenuOpen && (
+                <div className="absolute right-0 mt-2 w-58 bg-white border border-gray-300 rounded shadow-lg z-50">
+                  <div className="py-1">
+                    {session?.user?.email && (
+                      <div className="px-4 py-2 text-gray-700 border-b border-gray-200">
+                        <span className="font-semibold">Email:</span>{" "}
+                        {session.user.email}
+                      </div>
+                    )}
+                    <button
+                      onClick={signOut}
+                      className="block w-full "
+                    >
+                      Logout
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
-          </>
-        )}
+          )}
+          <div className="md:hidden" onClick={handleClick}>
+            {!nav ? <MenuIcon className="w-5" /> : <XIcon className="w-5" />}
+          </div>
+        </div>
       </div>
 
       <ul className={!nav ? "hidden" : "absolute bg-zinc-200 w-full px-8"}>
@@ -121,67 +147,45 @@ const Navbar = () => {
           </Link>
         </li>
         <li className="border-b-2 border-zinc-300 w-full">
-          <Link href="/about" onClick={handleClose}>
+          <Link href="/news" onClick={handleClose}>
             Мэдээ, мэдээлэл
           </Link>
         </li>
         <li className="border-b-2 border-zinc-300 w-full">
-          <Link href="/legal/page" onClick={handleClose}>
+          <Link href="/legal" onClick={handleClose}>
             Хууль тогтоомж
           </Link>
         </li>
         <li className="border-b-2 border-zinc-300 w-full">
-          <Link href="/service/page" onClick={handleClose}>
+          <Link href="/service" onClick={handleClose}>
             Үйлчилгээ
           </Link>
         </li>
 
-        <div className="flex flex-col my-4">
         {!session ? (
           <>
-            <div className="hidden md:flex space-x-4 mr-8 ">
-              <button
-                className="border-none bg-transparent text-black  text-lg"
-                onClick={toggleLoginForm}
-              >
-                Нэвтрэх
-              </button>
-              <button
-                className="px-8 py-3 text-lg text-white border bg-red-500 border-red-600 hover:bg-transparent hover:text-black rounded-md"
-                onClick={toggleRegisterForm}
-              >
-                Бүртгүүлэх
-              </button>
-            </div>
-
-            <div className="md:hidden mr-4" onClick={handleClick}>
-              {!nav ? <MenuIcon className="w-5" /> : <XIcon className="w-5" />}
-            </div>
+            <button
+              className="w-full my-4 text-lg border-none bg-transparent text-black"
+              onClick={toggleLoginForm}
+            >
+              Нэвтрэх
+            </button>
+            <button
+              className="w-full px-8 py-3 text-lg text-white bg-red-500 border border-red-600 hover:bg-transparent hover:text-black rounded-md"
+              onClick={toggleRegisterForm}
+            >
+              Бүртгүүлэх
+            </button>
           </>
         ) : (
-          <>
-            <div className="flex items-center space-x-4 mr-10">
-              <div className="w-10 h-10 rounded-full relative">
-                <FaUser size={40}/>
-              </div>
-              {session?.user?.email && <span>{session.user.email}</span>}
-              <button
-                onClick={() => {
-                  signOut();
-                }}
-                className="btn btn-primary"
-              >
-                Гарах
-              </button>
-            </div>
-
-          </>
+          <div className=""></div>
         )}
-        </div>
       </ul>
 
       {showLoginForm && <Signin onClose={() => setShowLoginForm(false)} />}
-      {showRegisterForm && <Signup onClose={() => setShowRegisterForm(false)} />}
+      {showRegisterForm && (
+        <Signup onClose={() => setShowRegisterForm(false)} />
+      )}
     </nav>
   );
 };

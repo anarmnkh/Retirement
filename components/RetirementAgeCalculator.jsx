@@ -84,7 +84,7 @@ const RetirementAgeCalculator = () => {
           </div>
         )}
         <button
-          className="w-full mt-6 px-4 py-2 bg-white text-black font-semibold rounded-md hover:bg-gray-300 focus:outline-none focus:bg-red-600"
+          className="w-full mt-6 px-4 py-2 bg-white text-black font-semibold rounded-md focus:outline-none focus:bg-red-600"
           onClick={calculateRetirementAge}
         >
           Тооцоолох
